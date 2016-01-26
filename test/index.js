@@ -4,7 +4,7 @@ const expect = chai.expect
 const plugiator = require('plugiator')
 
 const Remi = require('remi')
-const decorate = require('../')
+const decorate = require('..')
 
 describe('decorate', function() {
   let remi
@@ -13,7 +13,7 @@ describe('decorate', function() {
   beforeEach(function() {
     app = {}
     remi = new Remi({
-      extensions: [decorate],
+      extensions: [{ extension: decorate }],
     })
   })
 
@@ -75,14 +75,26 @@ describe('decorate', function() {
     })
 
     return remi
-      .register(app, plugin, {})
+      .register(app, plugin)
       .then(() => {
         expect(app.foo).to.eq('bar')
 
-        return remi.register(app, [plugiator.noop()], {})
+        return remi.register(app, [plugiator.noop()])
       })
       .then(() => {
         expect(app.foo).to.eq('bar')
+      })
+  })
+
+  it('should through error if invalid parameters passed', function(done) {
+    let plugin = plugiator.anonymous((app, options) => {
+      app.decorate('server', 111)
+    })
+
+    remi.register(app, plugin)
+      .catch(err => {
+        expect(err).to.be.instanceOf(Error)
+        done()
       })
   })
 })

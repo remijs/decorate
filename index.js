@@ -20,7 +20,7 @@ module.exports = function(remi, opts) {
     },
   }
 
-  remi.pre('createPlugin', function(next, target, plugin) {
+  remi.pre('createPlugin', (next, target, plugin) => {
     next(merge(target, extension), plugin)
   })
 }
