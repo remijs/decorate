@@ -98,7 +98,20 @@ describe('decorate', function() {
 
     registrator.register(plugin)
       .catch(err => {
-        expect(err).to.be.instanceOf(Error)
+        expect(err).to.be.instanceOf(Error, 'invalid arguments passed to decorate')
+        done()
+      })
+  })
+
+  it('should through error if decoration type is not server', function(done) {
+    let plugin = plugiator.anonymous((app, options, next) => {
+      app.decorate(111)
+      next()
+    })
+
+    registrator.register(plugin)
+      .catch(err => {
+        expect(err).to.be.instanceOf(Error, 'Only "server" type is supported')
         done()
       })
   })
