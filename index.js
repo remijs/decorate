@@ -3,24 +3,23 @@ const merge = require('merge')
 
 module.exports = function() {
   return (next, target, plugin, cb) => {
-    let extension = {
-      decorate(type, prop, method) {
-        if (type !== 'server')
-          throw new Error('Only "server" type is supported')
+    target.decorate = function(type, prop, method) {
+      if (type !== 'server')
+        throw new Error('Only "server" type is supported')
 
-        if (typeof prop === 'string') {
-          extension[prop] = method
-        } else if (typeof prop === 'object') {
-          merge(extension, prop)
-        } else {
-          throw new Error('invalid arguments passed to decorate')
-        }
+      let extension = {}
+      if (typeof prop === 'string') {
+        extension[prop] = method
+      } else if (typeof prop === 'object') {
+        merge(extension, prop)
+      } else {
+        throw new Error('invalid arguments passed to decorate')
+      }
 
-        merge(target, extension)
-        merge(target.root, extension)
-      },
+      merge(this, extension)
+      merge(this.root, extension)
     }
 
-    next(merge(target, extension), plugin, cb)
+    next(target, plugin, cb)
   }
 }

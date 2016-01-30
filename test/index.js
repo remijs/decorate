@@ -43,7 +43,7 @@ describe('decorate', function() {
       .then(() => expect(app.foo).to.eq(1))
   })
 
-  it('should decorate with with multiple properties', function() {
+  it('should decorate with multiple properties', function() {
     let plugin1 = plugiator.anonymous((app, options, next) => {
       app.decorate('server', {
         foo: 1,
@@ -114,5 +114,26 @@ describe('decorate', function() {
         expect(err).to.be.instanceOf(Error, 'Only "server" type is supported')
         done()
       })
+  })
+
+  it('should decorate even if the target was changed by a different hook', function() {
+    let plugin = plugiator.anonymous((app, options, next) => {
+      app.decorate('server', 'foo', 1)
+      expect(app.foo).to.eq(1)
+      next()
+    })
+
+    let plugins = [
+      {
+        register: plugin,
+      },
+    ]
+
+    registrator.hook((next, target, opts, cb) => {
+      next(Object.assign({}, target), opts, cb)
+    })
+
+    return registrator.register(plugins)
+      .then(() => expect(app.foo).to.eq(1))
   })
 })
