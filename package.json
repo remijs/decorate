@@ -1,6 +1,6 @@
 {
   "name": "remi-decorate",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A remi extension that adds the decorate method to the target",
   "main": "index.js",
   "scripts": {
