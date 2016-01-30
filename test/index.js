@@ -3,29 +3,30 @@ const chai = require('chai')
 const expect = chai.expect
 const plugiator = require('plugiator')
 
-const Remi = require('remi')
+const remi = require('remi')
 const decorate = require('..')
 
 describe('decorate', function() {
-  let remi
+  let registrator
   let app
 
   beforeEach(function() {
     app = {}
-    remi = new Remi({
-      extensions: [{ extension: decorate }],
-    })
+    registrator = remi(app)
+    registrator.hook(decorate())
   })
 
   it('should decorate with a single property', function() {
-    let plugin1 = plugiator.anonymous((app, options) => {
+    let plugin1 = plugiator.anonymous((app, options, next) => {
       app.decorate('server', 'foo', 1)
       expect(app.foo).to.eq(1)
       expect(app.root.foo).to.eq(1)
+      next()
     })
-    let plugin2 = plugiator.anonymous((app, options) => {
+    let plugin2 = plugiator.anonymous((app, options, next) => {
       expect(app.foo).to.eq(1)
       expect(app.root.foo).to.eq(1)
+      next()
     })
 
     let plugins = [
@@ -38,21 +39,23 @@ describe('decorate', function() {
       },
     ]
 
-    return remi.register(app, plugins)
+    return registrator.register(plugins)
       .then(() => expect(app.foo).to.eq(1))
   })
 
   it('should decorate with with multiple properties', function() {
-    let plugin1 = plugiator.anonymous((app, options) => {
+    let plugin1 = plugiator.anonymous((app, options, next) => {
       app.decorate('server', {
         foo: 1,
       })
       expect(app.foo).to.eq(1)
       expect(app.root.foo).to.eq(1)
+      next()
     })
-    let plugin2 = plugiator.anonymous((app, options) => {
+    let plugin2 = plugiator.anonymous((app, options, next) => {
       expect(app.foo).to.eq(1)
       expect(app.root.foo).to.eq(1)
+      next()
     })
 
     let plugins = [
@@ -65,21 +68,22 @@ describe('decorate', function() {
       },
     ]
 
-    return remi.register(app, plugins)
+    return registrator.register(plugins)
       .then(() => expect(app.foo).to.eq(1))
   })
 
   it('should share the decorated elements through register invocations', function() {
-    let plugin = plugiator.anonymous((app, options) => {
+    let plugin = plugiator.anonymous((app, options, next) => {
       app.decorate('server', 'foo', 'bar')
+      next()
     })
 
-    return remi
-      .register(app, plugin)
+    return registrator
+      .register(plugin)
       .then(() => {
         expect(app.foo).to.eq('bar')
 
-        return remi.register(app, [plugiator.noop()])
+        return registrator.register([plugiator.noop()])
       })
       .then(() => {
         expect(app.foo).to.eq('bar')
@@ -87,11 +91,12 @@ describe('decorate', function() {
   })
 
   it('should through error if invalid parameters passed', function(done) {
-    let plugin = plugiator.anonymous((app, options) => {
+    let plugin = plugiator.anonymous((app, options, next) => {
       app.decorate('server', 111)
+      next()
     })
 
-    remi.register(app, plugin)
+    registrator.register(plugin)
       .catch(err => {
         expect(err).to.be.instanceOf(Error)
         done()

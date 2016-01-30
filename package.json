@@ -35,7 +35,7 @@
     "istanbul": "^0.4.2",
     "mocha": "^2.3.4",
     "plugiator": "^0.1.1",
-    "remi": "^0.4.1"
+    "remi": "^0.5.0"
   },
   "dependencies": {
     "merge": "^1.2.0"
