@@ -20,12 +20,10 @@ npm i remi-decorate
 Registering the extension
 
 ```js
-const Remi = require('remi')
+const remi = require('remi')
 const remiDecorate = require('remi-decorate')
 
-let remi = new Remi({
-  extensions: [remiDecorate],
-})
+let registrator = remi(remiDecorate())
 ```
 
 Once the remi-decorate extension is registered, the remi plugins can decorate the target app
@@ -33,7 +31,7 @@ Once the remi-decorate extension is registered, the remi plugins can decorate th
 The `.decorate` method can be used to extend the app's API.
 
 ```js
-function plugin(app, opts) {
+function plugin(app, opts, next) {
   /* The app can be decorated by one property at once */
   app.decorate('server', 'foo', function() {
     console.log('foo');
@@ -44,6 +42,8 @@ function plugin(app, opts) {
     bar: 23,
     qax: 54
   });
+  
+  next()
 }
 
 plugin.attributes = {
@@ -51,10 +51,12 @@ plugin.attributes = {
 }
 
 // the decorations will be available in the other plugins
-function plugin2(app, opts) {
+function plugin2(app, opts, next) {
   console.log(app.foo);
   console.log(app.bar);
   console.log(app.qax);
+  
+  next()
 }
 
 plugin2.attributes = {
