@@ -17,72 +17,53 @@ describe('decorate', function() {
   })
 
   it('should decorate with a single property', function() {
-    let plugin1 = plugiator.anonymous((app, options, next) => {
-      app.decorate('server', 'foo', 1)
-      expect(app.foo).to.eq(1)
-      expect(app.root.foo).to.eq(1)
-      next()
-    })
-    let plugin2 = plugiator.anonymous((app, options, next) => {
-      expect(app.foo).to.eq(1)
-      expect(app.root.foo).to.eq(1)
-      next()
-    })
-
-    let plugins = [
-      {
-        register: plugin1,
-        options: {foo: 1},
-      },
-      {
-        register: plugin2,
-      },
-    ]
-
-    return registrator.register(plugins)
+    return registrator
+      .register([
+        plugiator.anonymous((app, options, next) => {
+          app.decorate('foo', 1)
+          expect(app.foo).to.eq(1)
+          expect(app.root.foo).to.eq(1)
+          next()
+        }),
+        plugiator.anonymous((app, options, next) => {
+          expect(app.foo).to.eq(1)
+          expect(app.root.foo).to.eq(1)
+          next()
+        }),
+      ])
       .then(() => expect(app.foo).to.eq(1))
   })
 
   it('should decorate with multiple properties', function() {
-    let plugin1 = plugiator.anonymous((app, options, next) => {
-      app.decorate('server', {
-        foo: 1,
-      })
-      expect(app.foo).to.eq(1)
-      expect(app.root.foo).to.eq(1)
-      next()
-    })
-    let plugin2 = plugiator.anonymous((app, options, next) => {
-      expect(app.foo).to.eq(1)
-      expect(app.root.foo).to.eq(1)
-      next()
-    })
-
-    let plugins = [
-      {
-        register: plugin1,
-        options: {foo: 1},
-      },
-      {
-        register: plugin2,
-      },
-    ]
-
-    return registrator.register(plugins)
+    return registrator
+      .register([
+        plugiator.anonymous((app, options, next) => {
+          app.decorate({
+            foo: 1,
+          })
+          expect(app.foo).to.eq(1)
+          expect(app.root.foo).to.eq(1)
+          next()
+        }),
+        plugiator.anonymous((app, options, next) => {
+          expect(app.foo).to.eq(1)
+          expect(app.root.foo).to.eq(1)
+          next()
+        }),
+      ])
       .then(() => expect(app.foo).to.eq(1))
   })
 
   it('should share the decorated elements through register invocations', function() {
-    let plugin = plugiator.anonymous((app, options, next) => {
-      app.decorate('server', 'foo', 'bar')
-      next()
-    })
-
     return registrator
-      .register(plugin)
+      .register([
+        plugiator.anonymous((app, options, next) => {
+          app.decorate('foo', 'bar')
+          next()
+        }),
+      ])
       .then(() => {
         expect(app.foo).to.eq('bar')
-
         return registrator.register([plugiator.noop()])
       })
       .then(() => {
@@ -91,12 +72,13 @@ describe('decorate', function() {
   })
 
   it('should through error if invalid parameters passed', function(done) {
-    let plugin = plugiator.anonymous((app, options, next) => {
-      app.decorate('server', 111)
-      next()
-    })
-
-    registrator.register(plugin)
+    registrator
+      .register([
+        plugiator.anonymous((app, options, next) => {
+          app.decorate(111)
+          next()
+        }),
+      ])
       .catch(err => {
         expect(err).to.be.instanceOf(Error, 'invalid arguments passed to decorate')
         done()
@@ -104,12 +86,13 @@ describe('decorate', function() {
   })
 
   it('should through error if decoration type is not server', function(done) {
-    let plugin = plugiator.anonymous((app, options, next) => {
-      app.decorate(111)
-      next()
-    })
-
-    registrator.register(plugin)
+    registrator
+      .register([
+        plugiator.anonymous((app, options, next) => {
+          app.decorate(111)
+          next()
+        }),
+      ])
       .catch(err => {
         expect(err).to.be.instanceOf(Error, 'Only "server" type is supported')
         done()
@@ -117,23 +100,18 @@ describe('decorate', function() {
   })
 
   it('should decorate even if the target was changed by a different hook', function() {
-    let plugin = plugiator.anonymous((app, options, next) => {
-      app.decorate('server', 'foo', 1)
-      expect(app.foo).to.eq(1)
-      next()
-    })
-
-    let plugins = [
-      {
-        register: plugin,
-      },
-    ]
-
     registrator.hook((next, target, opts, cb) => {
       next(Object.assign({}, target), opts, cb)
     })
 
-    return registrator.register(plugins)
+    return registrator
+      .register([
+        plugiator.anonymous((app, options, next) => {
+          app.decorate('foo', 1)
+          expect(app.foo).to.eq(1)
+          next()
+        }),
+      ])
       .then(() => expect(app.foo).to.eq(1))
   })
 })

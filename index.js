@@ -3,10 +3,7 @@ const merge = require('merge')
 
 module.exports = function() {
   return (next, target, plugin, cb) => {
-    target.decorate = function(type, prop, method) {
-      if (type !== 'server')
-        throw new Error('Only "server" type is supported')
-
+    target.decorate = function(prop, method) {
       let extension = {}
       if (typeof prop === 'string') {
         extension[prop] = method

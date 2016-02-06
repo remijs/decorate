@@ -33,16 +33,16 @@ The `.decorate` method can be used to extend the app's API.
 ```js
 function plugin(app, opts, next) {
   /* The app can be decorated by one property at once */
-  app.decorate('server', 'foo', function() {
+  app.decorate('foo', function() {
     console.log('foo');
   });
 
   /* or by several properties at once */
-  app.decorate('server', {
+  app.decorate({
     bar: 23,
     qax: 54
   });
-  
+
   next()
 }
 
@@ -55,7 +55,7 @@ function plugin2(app, opts, next) {
   console.log(app.foo);
   console.log(app.bar);
   console.log(app.qax);
-  
+
   next()
 }
 
