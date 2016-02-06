@@ -23,7 +23,9 @@ Registering the extension
 const remi = require('remi')
 const remiDecorate = require('remi-decorate')
 
-let registrator = remi(remiDecorate())
+let app = {}
+let registrator = remi(app)
+registrator.hook(remiDecorate())
 ```
 
 Once the remi-decorate extension is registered, the remi plugins can decorate the target app
