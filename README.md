@@ -10,7 +10,7 @@ A remi extension that adds the decorate method to the target
 
 ## Installation
 
-```
+``` sh
 npm i remi-decorate
 ```
 
@@ -28,21 +28,19 @@ let registrator = remi(app)
 registrator.hook(remiDecorate())
 ```
 
-Once the remi-decorate extension is registered, the remi plugins can decorate the target app
+Once the `remi-decorate` extension is registered, the remi plugins can decorate the target app.
 
 The `.decorate` method can be used to extend the app's API.
 
-```js
+``` js
 function plugin(app, opts, next) {
-  /* The app can be decorated by one property at once */
-  app.decorate('foo', function() {
-    console.log('foo');
-  });
+  // The app can be decorated by one property at once
+  app.decorate('sayHello', () => console.log('Hello world!'));
 
-  /* or by several properties at once */
+  // or by several properties at once
   app.decorate({
-    bar: 23,
-    qax: 54
+    uaCapital: 'Kyiv',
+    uaTimezone: 'EET',
   });
 
   next()
@@ -54,9 +52,14 @@ plugin.attributes = {
 
 // the decorations will be available in the other plugins
 function plugin2(app, opts, next) {
-  console.log(app.foo);
-  console.log(app.bar);
-  console.log(app.qax);
+  app.sayHello()
+  //> Hello world!
+
+  console.log(app.uaCapital)
+  //> Kyiv
+
+  console.log(app.uaTimezone)
+  //> EET
 
   next()
 }
@@ -70,4 +73,4 @@ plugin2.attributes = {
 
 ## License
 
-MIT
+MIT © [Zoltan Kochan](https://github.com/zkochan)
