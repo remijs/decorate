@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/remijs/decorate.git"
+    "url": "git+https://github.com/remijs/remi-decorate.git"
   },
   "files": [
     "index.js"
@@ -26,9 +26,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/remijs/decorate/issues"
+    "url": "https://github.com/remijs/remi-decorate/issues"
   },
-  "homepage": "https://github.com/remijs/decorate#readme",
+  "homepage": "https://github.com/remijs/remi-decorate#readme",
   "devDependencies": {
     "chai": "^3.4.1",
     "coveralls": "^2.11.6",

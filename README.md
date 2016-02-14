@@ -2,10 +2,10 @@
 
 A remi extension that adds the decorate method to the target
 
-[![Dependency Status](https://david-dm.org/remijs/decorate/status.svg?style=flat)](https://david-dm.org/remijs/decorate)
-[![Build Status](https://travis-ci.org/remijs/decorate.svg?branch=master)](https://travis-ci.org/remijs/decorate)
+[![Dependency Status](https://david-dm.org/remijs/remi-decorate/status.svg?style=flat)](https://david-dm.org/remijs/remi-decorate)
+[![Build Status](https://travis-ci.org/remijs/remi-decorate.svg?branch=master)](https://travis-ci.org/remijs/remi-decorate)
 [![npm version](https://badge.fury.io/js/remi-decorate.svg)](http://badge.fury.io/js/remi-decorate)
-[![Coverage Status](https://coveralls.io/repos/remijs/decorate/badge.svg?branch=master&service=github)](https://coveralls.io/github/remijs/decorate?branch=master)
+[![Coverage Status](https://coveralls.io/repos/remijs/remi-decorate/badge.svg?branch=master&service=github)](https://coveralls.io/github/remijs/remi-decorate?branch=master)
 
 
 ## Installation
