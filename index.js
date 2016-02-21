@@ -1,11 +1,11 @@
 'use strict'
 const merge = require('merge')
 
-module.exports = function() {
+module.exports = () => {
   return (next, target, plugin, cb) => {
     function toExtension(prop, method) {
       if (typeof prop === 'string') {
-        let extension = {}
+        const extension = {}
         extension[prop] = method
         return extension
       }
@@ -18,7 +18,7 @@ module.exports = function() {
     }
 
     target.decorate = function(prop, method) {
-      let extension = toExtension(prop, method)
+      const extension = toExtension(prop, method)
 
       merge(this, extension)
       merge(this.root, extension)
