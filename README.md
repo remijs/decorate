@@ -23,8 +23,8 @@ Registering the extension
 const remi = require('remi')
 const remiDecorate = require('remi-decorate')
 
-let app = {}
-let registrator = remi(app)
+const app = {}
+const registrator = remi(app)
 registrator.hook(remiDecorate())
 ```
 
@@ -73,4 +73,4 @@ plugin2.attributes = {
 
 ## License
 
-MIT © [Zoltan Kochan](https://github.com/zkochan)
+MIT © [Zoltan Kochan](https://www.kochan.io)
