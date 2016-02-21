@@ -31,12 +31,15 @@
     "url": "https://github.com/remijs/remi-decorate/issues"
   },
   "homepage": "https://github.com/remijs/remi-decorate#readme",
+  "peerDependencies": {
+    "remi": "1.x.x"
+  },
   "devDependencies": {
     "chai": "^3.4.1",
     "istanbul": "^0.4.2",
     "mocha": "^2.3.4",
     "plugiator": "^0.1.1",
-    "remi": "^0.5.1"
+    "remi": "1.x.x"
   },
   "dependencies": {
     "merge": "^1.2.0"
