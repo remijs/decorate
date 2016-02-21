@@ -19,7 +19,9 @@
   ],
   "keywords": [
     "remi",
-    "extension"
+    "remi-extension",
+    "extension",
+    "decorate"
   ],
   "author": {
     "name": "Zoltan Kochan",
