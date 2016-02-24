@@ -114,4 +114,19 @@ describe('decorate', function() {
       ])
       .then(() => expect(app.foo).to.eq(1))
   })
+
+  it('should throw error when trying to rewrite an existing property', function(done) {
+    registrator
+      .register([
+        plugiator.anonymous((app, options, next) => {
+          app.decorate('foo', 111)
+          app.decorate('foo', 111)
+          next()
+        }),
+      ])
+      .catch(err => {
+        expect(err).to.be.instanceOf(Error, 'Server decoration already defined: foo')
+        done()
+      })
+  })
 })
