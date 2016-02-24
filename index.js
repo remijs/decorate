@@ -1,11 +1,12 @@
 'use strict'
-const merge = require('merge')
+module.exports = opts => {
+  opts = opts || {}
+  const emulateHapi = opts.emulateHapi === true
 
-module.exports = () => {
   return (next, target, plugin, cb) => {
-    target.decorate = function(prop, method) {
+    function decorate(target, prop, method) {
       if (typeof prop === 'object') {
-        Object.keys(prop).forEach(key => this.decorate(key, prop[key]))
+        Object.keys(prop).forEach(key => decorate(target, key, prop[key]))
         return
       }
 
@@ -13,12 +14,22 @@ module.exports = () => {
         throw new Error('invalid arguments passed to decorate')
       }
 
-      if (this[prop]) {
+      if (target[prop]) {
         throw new Error('Server decoration already defined: ' + prop)
       }
 
-      this[prop] = method
-      this.root[prop] = method
+      target[prop] = method
+      target.root[prop] = method
+    }
+
+    target.decorate = function() {
+      if (!emulateHapi) return decorate(this, arguments[0], arguments[1])
+
+      if (arguments[0] !== 'server') {
+        throw new Error('Only "server" type is supported')
+      }
+
+      return decorate(this, arguments[1], arguments[2])
     }
 
     next(target, plugin, cb)

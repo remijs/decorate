@@ -43,7 +43,5 @@
     "plugiator": "^0.1.1",
     "remi": "1.x.x"
   },
-  "dependencies": {
-    "merge": "^1.2.0"
-  }
+  "dependencies": {}
 }

@@ -85,18 +85,21 @@ describe('decorate', function() {
       })
   })
 
-  it('should through error if decoration type is not server', function(done) {
-    registrator
+  it('should through error if decoration type is not server', function() {
+    app = {}
+    registrator = remi(app)
+    registrator.hook(decorate({
+      emulateHapi: true,
+    }))
+
+    return registrator
       .register([
         plugiator.anonymous((app, options, next) => {
-          app.decorate(111)
+          expect(() => app.decorate('foo', 111))
+            .to.throw(Error, 'Only "server" type is supported')
           next()
         }),
       ])
-      .catch(err => {
-        expect(err).to.be.instanceOf(Error, 'Only "server" type is supported')
-        done()
-      })
   })
 
   it('should decorate even if the target was changed by a different hook', function() {
