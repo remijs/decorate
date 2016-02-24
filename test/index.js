@@ -85,40 +85,6 @@ describe('decorate', function() {
       })
   })
 
-  it('should through error if decoration type is not server and emulating hapi', function() {
-    app = {}
-    registrator = remi(app)
-    registrator.hook(decorate({
-      emulateHapi: true,
-    }))
-
-    return registrator
-      .register([
-        plugiator.anonymous((app, options, next) => {
-          expect(() => app.decorate('foo', 111))
-            .to.throw(Error, 'Only "server" type is supported')
-          next()
-        }),
-      ])
-  })
-
-  it('should not through error if decoration type is server and emulating hapi', function() {
-    app = {}
-    registrator = remi(app)
-    registrator.hook(decorate({
-      emulateHapi: true,
-    }))
-
-    return registrator
-      .register([
-        plugiator.anonymous((app, options, next) => {
-          app.decorate('server', 'foo', 111)
-          expect(app.foo).to.eq(111)
-          next()
-        }),
-      ])
-  })
-
   it('should decorate even if the target was changed by a different hook', function() {
     registrator.hook((next, target, opts, cb) => {
       next(Object.assign({}, target), opts, cb)
@@ -148,5 +114,38 @@ describe('decorate', function() {
         expect(err).to.be.instanceOf(Error, 'Server decoration already defined: foo')
         done()
       })
+  })
+})
+
+describe('decorate.emulateHapi', function() {
+  let registrator
+  let app
+
+  beforeEach(function() {
+    app = {}
+    registrator = remi(app)
+    registrator.hook(decorate.emulateHapi())
+  })
+
+  it('should through error if decoration type is not server and emulating hapi', function() {
+    return registrator
+      .register([
+        plugiator.anonymous((app, options, next) => {
+          expect(() => app.decorate('foo', 111))
+            .to.throw(Error, 'Only "server" type is supported')
+          next()
+        }),
+      ])
+  })
+
+  it('should not through error if decoration type is server and emulating hapi', function() {
+    return registrator
+      .register([
+        plugiator.anonymous((app, options, next) => {
+          app.decorate('server', 'foo', 111)
+          expect(app.foo).to.eq(111)
+          next()
+        }),
+      ])
   })
 })
