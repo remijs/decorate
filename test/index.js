@@ -1,4 +1,7 @@
 'use strict'
+const describe = require('mocha').describe
+const it = require('mocha').it
+const beforeEach = require('mocha').beforeEach
 const chai = require('chai')
 const expect = chai.expect
 const plugiator = require('plugiator')
@@ -6,17 +9,17 @@ const plugiator = require('plugiator')
 const remi = require('remi')
 const decorate = require('..')
 
-describe('decorate', function() {
+describe('decorate', function () {
   let registrator
   let app
 
-  beforeEach(function() {
+  beforeEach(function () {
     app = {}
     registrator = remi(app)
     registrator.hook(decorate())
   })
 
-  it('should decorate with a single property', function() {
+  it('should decorate with a single property', function () {
     return registrator
       .register([
         plugiator.anonymous((app, options, next) => {
@@ -34,7 +37,7 @@ describe('decorate', function() {
       .then(() => expect(app.foo).to.eq(1))
   })
 
-  it('should decorate with multiple properties', function() {
+  it('should decorate with multiple properties', function () {
     return registrator
       .register([
         plugiator.anonymous((app, options, next) => {
@@ -54,7 +57,7 @@ describe('decorate', function() {
       .then(() => expect(app.foo).to.eq(1))
   })
 
-  it('should share the decorated elements through register invocations', function() {
+  it('should share the decorated elements through register invocations', function () {
     return registrator
       .register([
         plugiator.anonymous((app, options, next) => {
@@ -71,7 +74,7 @@ describe('decorate', function() {
       })
   })
 
-  it('should through error if invalid parameters passed', function(done) {
+  it('should through error if invalid parameters passed', function (done) {
     registrator
       .register([
         plugiator.anonymous((app, options, next) => {
@@ -85,7 +88,7 @@ describe('decorate', function() {
       })
   })
 
-  it('should decorate even if the target was changed by a different hook', function() {
+  it('should decorate even if the target was changed by a different hook', function () {
     registrator.hook((next, target, opts, cb) => {
       next(Object.assign({}, target), opts, cb)
     })
@@ -101,7 +104,7 @@ describe('decorate', function() {
       .then(() => expect(app.foo).to.eq(1))
   })
 
-  it('should throw error when trying to rewrite an existing property', function(done) {
+  it('should throw error when trying to rewrite an existing property', function (done) {
     registrator
       .register([
         plugiator.anonymous((app, options, next) => {
@@ -117,17 +120,17 @@ describe('decorate', function() {
   })
 })
 
-describe('decorate.emulateHapi', function() {
+describe('decorate.emulateHapi', function () {
   let registrator
   let app
 
-  beforeEach(function() {
+  beforeEach(function () {
     app = {}
     registrator = remi(app)
     registrator.hook(decorate.emulateHapi())
   })
 
-  it('should through error if decoration type is not server and emulating hapi', function() {
+  it('should through error if decoration type is not server and emulating hapi', function () {
     return registrator
       .register([
         plugiator.anonymous((app, options, next) => {
@@ -138,7 +141,7 @@ describe('decorate.emulateHapi', function() {
       ])
   })
 
-  it('should not through error if decoration type is server and emulating hapi', function() {
+  it('should not through error if decoration type is server and emulating hapi', function () {
     return registrator
       .register([
         plugiator.anonymous((app, options, next) => {
