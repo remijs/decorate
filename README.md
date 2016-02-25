@@ -33,7 +33,7 @@ Once the `remi-decorate` extension is registered, the remi plugins can decorate 
 The `.decorate` method can be used to extend the app's API.
 
 ``` js
-function plugin(app, opts, next) {
+function plugin (app, opts, next) {
   // The app can be decorated by one property at once
   app.decorate('sayHello', () => console.log('Hello world!'));
 
@@ -51,7 +51,7 @@ plugin.attributes = {
 }
 
 // the decorations will be available in the other plugins
-function plugin2(app, opts, next) {
+function plugin2 (app, opts, next) {
   app.sayHello()
   //> Hello world!
 
@@ -69,6 +69,37 @@ plugin2.attributes = {
   dependencies: 'plugin',
 }
 ```
+
+
+### `decorate.emulateHapi(type, prop, method)`
+
+Hapi's server has a similar decorate function but it expects a `type` parameter
+which has to be the first. `decorate.emulate` allows to extend remi with a hapi alike decorate function that supports server decoration:
+
+```js
+const remi = require('remi')
+const remiDecorate = require('remi-decorate')
+
+const app = {}
+const registrator = remi(app)
+registrator.hook(remiDecorate.emulateHapi())
+
+
+// plugin
+module.exports = (plugin, opts, next) => {
+  plugin.decorate('server', 'foo', 'bar')
+
+  console.log(plugin.foo)
+  //> bar
+
+  // this will throw an exception because the first parameter is not 'server'
+  plugin.decorate('foo', 'bar')
+
+  next()
+}
+```
+
+Emulating hapi might be useful when developing some modules that want to reuse plugins that were developed for hapi.
 
 
 ## License
