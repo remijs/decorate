@@ -26,25 +26,28 @@ npm install remi-decorate --save
 
 ## Usage
 
-Registering the extension
-
-```js
+<!--@example('./example/index.js')-->
+``` js
 const remi = require('remi')
 const remiDecorate = require('remi-decorate')
 
 const app = {}
 const registrator = remi(app)
+```
+
+Registering the extension
+
+``` js
 registrator.hook(remiDecorate())
 ```
 
 Once the `remi-decorate` extension is registered, the remi plugins can decorate the target app.
-
 The `.decorate` method can be used to extend the app's API.
 
 ``` js
 function plugin (app, opts, next) {
   // The app can be decorated by one property at once
-  app.decorate('sayHello', () => console.log('Hello world!'));
+  app.decorate('sayHello', () => 'Hello world!');
 
   // or by several properties at once
   app.decorate({
@@ -61,7 +64,7 @@ plugin.attributes = {
 
 // the decorations will be available in the other plugins
 function plugin2 (app, opts, next) {
-  app.sayHello()
+  console.log(app.sayHello())
   //> Hello world!
 
   console.log(app.uaCapital)
@@ -77,7 +80,10 @@ plugin2.attributes = {
   name: 'plugin2',
   dependencies: 'plugin',
 }
+
+registrator.register([plugin, plugin2])
 ```
+<!--/@-->
 
 
 ### `decorate.emulateHapi(type, prop, method)`
@@ -85,7 +91,24 @@ plugin2.attributes = {
 Hapi's server has a similar decorate function but it expects a `type` parameter
 which has to be the first. `decorate.emulate` allows to extend remi with a hapi alike decorate function that supports server decoration:
 
-```js
+<!--@example('./example/emulate-hapi-plugin.js')-->
+``` js
+// plugin
+module.exports = (plugin, opts, next) => {
+  plugin.decorate('server', 'foo', 'bar')
+
+  console.log(plugin.foo)
+
+  // this will throw an exception because the first parameter is not 'server'
+  //plugin.decorate('foo', 'bar')
+
+  next()
+}
+```
+<!--/@-->
+
+<!--@example('./example/emulate-hapi.js')-->
+``` js
 const remi = require('remi')
 const remiDecorate = require('remi-decorate')
 
@@ -93,20 +116,9 @@ const app = {}
 const registrator = remi(app)
 registrator.hook(remiDecorate.emulateHapi())
 
-
-// plugin
-module.exports = (plugin, opts, next) => {
-  plugin.decorate('server', 'foo', 'bar')
-
-  console.log(plugin.foo)
-  //> bar
-
-  // this will throw an exception because the first parameter is not 'server'
-  plugin.decorate('foo', 'bar')
-
-  next()
-}
+registrator.register(require('./emulate-hapi-plugin'))
 ```
+<!--/@-->
 
 Emulating hapi might be useful when developing some modules that want to reuse plugins that were developed for hapi.
 
