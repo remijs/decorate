@@ -1,18 +1,27 @@
+<!--@'# ' + package.name-->
 # remi-decorate
+<!--/@-->
 
+<!--@package.description-->
 A remi extension that adds the decorate method to the target
+<!--/@-->
 
-[![Dependency Status](https://david-dm.org/remijs/remi-decorate/status.svg?style=flat)](https://david-dm.org/remijs/remi-decorate)
-[![Build Status](https://travis-ci.org/remijs/remi-decorate.svg?branch=master)](https://travis-ci.org/remijs/remi-decorate)
-[![npm version](https://badge.fury.io/js/remi-decorate.svg)](http://badge.fury.io/js/remi-decorate)
-[![Coverage Status](https://coveralls.io/repos/remijs/remi-decorate/badge.svg?branch=master&service=github)](https://coveralls.io/github/remijs/remi-decorate?branch=master)
+<!--@shields.flatSquare('deps', 'travis', 'coveralls', 'npm')-->
+[![Dependency status](https://img.shields.io/david/remijs/remi-decorate.svg?style=flat-square)](https://david-dm.org/remijs/remi-decorate)
+[![Build status](https://img.shields.io/travis/remijs/remi-decorate.svg?style=flat-square)](https://travis-ci.org/remijs/remi-decorate)
+[![Test coverage](https://img.shields.io/coveralls/remijs/remi-decorate.svg?style=flat-square)](https://coveralls.io/r/remijs/remi-decorate?branch=master)
+[![NPM version](https://img.shields.io/npm/v/remi-decorate.svg?style=flat-square)](https://www.npmjs.com/package/remi-decorate)
+<!--/@-->
 
-
+<!--@installation()-->
 ## Installation
 
+This module is installed via npm:
+
 ``` sh
-npm i remi-decorate
+npm install remi-decorate --save
 ```
+<!--/@-->
 
 
 ## Usage
@@ -102,6 +111,22 @@ module.exports = (plugin, opts, next) => {
 Emulating hapi might be useful when developing some modules that want to reuse plugins that were developed for hapi.
 
 
+<!--@license()-->
 ## License
 
-MIT © [Zoltan Kochan](https://www.kochan.io)
+MIT © [Zoltan Kochan](http://kochan.io)
+<!--/@-->
+
+***
+
+<!--@devDependencies()-->
+## Dev Dependencies
+
+- [chai](https://github.com/chaijs/chai): BDD/TDD assertion library for node.js and the browser. Test framework agnostic.
+- [istanbul](https://github.com/gotwarlost/istanbul): Yet another JS code coverage tool that computes statement, line, function and branch coverage with module loader hooks to transparently add coverage when running tests. Supports all JS coverage use cases including unit tests, server side functional tests
+- [mocha](https://github.com/mochajs/mocha): simple, flexible, fun test framework
+- [mos](https://github.com/zkochan/mos): A pluggable module that injects content into your markdown files via hidden JavaScript snippets
+- [plugiator](https://github.com/zkochan/plugiator): hapi plugins creator
+- [remi](https://github.com/remijs/remi): A plugin registrator.
+
+<!--/@-->
