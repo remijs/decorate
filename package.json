@@ -34,6 +34,11 @@
     "url": "https://github.com/remijs/remi-decorate/issues"
   },
   "homepage": "https://github.com/remijs/remi-decorate#readme",
+  "mos": {
+    "plugins": [
+      "readme"
+    ]
+  },
   "peerDependencies": {
     "remi": "1.x.x"
   },
@@ -41,7 +46,8 @@
     "chai": "^3.4.1",
     "istanbul": "^0.4.2",
     "mocha": "^2.3.4",
-    "mos": "^0.9.4",
+    "mos": "^1.3.0",
+    "mos-plugin-readme": "^1.0.2",
     "plugiator": "^0.1.1",
     "remi": "1.x.x"
   },

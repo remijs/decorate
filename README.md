@@ -1,28 +1,16 @@
-<!--@'# ' + package.name-->
 # remi-decorate
+
+> A remi extension that adds the decorate method to the target
+
+<!--@shields('npm', 'travis', 'coveralls')-->
+[![npm version](https://img.shields.io/npm/v/remi-decorate.svg)](https://www.npmjs.com/package/remi-decorate) [![Build Status](https://img.shields.io/travis/remijs/remi-decorate/master.svg)](https://travis-ci.org/remijs/remi-decorate) [![Coverage Status](https://img.shields.io/coveralls/remijs/remi-decorate/master.svg)](https://coveralls.io/r/remijs/remi-decorate?branch=master)
 <!--/@-->
 
-<!--@package.description-->
-A remi extension that adds the decorate method to the target
-<!--/@-->
-
-<!--@shields.flatSquare('deps', 'travis', 'coveralls', 'npm')-->
-[![Dependency status](https://img.shields.io/david/remijs/remi-decorate.svg?style=flat-square)](https://david-dm.org/remijs/remi-decorate)
-[![Build status](https://img.shields.io/travis/remijs/remi-decorate.svg?style=flat-square)](https://travis-ci.org/remijs/remi-decorate)
-[![Test coverage](https://img.shields.io/coveralls/remijs/remi-decorate.svg?style=flat-square)](https://coveralls.io/r/remijs/remi-decorate?branch=master)
-[![NPM version](https://img.shields.io/npm/v/remi-decorate.svg?style=flat-square)](https://www.npmjs.com/package/remi-decorate)
-<!--/@-->
-
-<!--@installation()-->
 ## Installation
 
-This module is installed via npm:
-
-``` sh
-npm install remi-decorate --save
+```sh
+npm install --save remi remi-decorate
 ```
-<!--/@-->
-
 
 ## Usage
 
@@ -41,7 +29,7 @@ Once the `remi-decorate` extension is registered, the remi plugins can decorate 
 
 The `.decorate` method can be used to extend the app's API.
 
-``` js
+```js
 function plugin (app, opts, next) {
   // The app can be decorated by one property at once
   app.decorate('sayHello', () => console.log('Hello world!'));
@@ -79,7 +67,6 @@ plugin2.attributes = {
 }
 ```
 
-
 ### `decorate.emulateHapi(type, prop, method)`
 
 Hapi's server has a similar decorate function but it expects a `type` parameter
@@ -110,22 +97,26 @@ module.exports = (plugin, opts, next) => {
 
 Emulating hapi might be useful when developing some modules that want to reuse plugins that were developed for hapi.
 
-
-<!--@license()-->
 ## License
 
-MIT © [Zoltan Kochan](http://kochan.io)
+[MIT](./LICENSE) © [Zoltan Kochan](http://kochan.io)
+
+* * *
+
+<!--@dependencies({ shield: true })-->
+## <a name="dependencies">Dependencies</a> [![dependency status](https://img.shields.io/david/remijs/remi-decorate/master.svg)](https://david-dm.org/remijs/remi-decorate/master)
+
+None
 <!--/@-->
 
-***
-
-<!--@devDependencies()-->
-## Dev Dependencies
+<!--@devDependencies({ shield: true })-->
+## <a name="dev-dependencies">Dev Dependencies</a> [![devDependency status](https://img.shields.io/david/dev/remijs/remi-decorate/master.svg)](https://david-dm.org/remijs/remi-decorate/master#info=devDependencies)
 
 - [chai](https://github.com/chaijs/chai): BDD/TDD assertion library for node.js and the browser. Test framework agnostic.
 - [istanbul](https://github.com/gotwarlost/istanbul): Yet another JS code coverage tool that computes statement, line, function and branch coverage with module loader hooks to transparently add coverage when running tests. Supports all JS coverage use cases including unit tests, server side functional tests
 - [mocha](https://github.com/mochajs/mocha): simple, flexible, fun test framework
-- [mos](https://github.com/zkochan/mos): A pluggable module that injects content into your markdown files via hidden JavaScript snippets
+- [mos](https://github.com/mosjs/mos): A pluggable module that injects content into your markdown files via hidden JavaScript snippets
+- [mos-plugin-readme](https://github.com/mosjs/mos-plugin-readme): A mos plugin for generating README
 - [plugiator](https://github.com/zkochan/plugiator): hapi plugins creator
 - [remi](https://github.com/remijs/remi): A plugin registrator.
 
