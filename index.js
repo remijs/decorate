@@ -1,6 +1,6 @@
 'use strict'
-module.exports = opts => {
-  return (next, target, plugin, cb) => {
+module.exports = function (opts) {
+  return function (next, target, plugin, cb) {
     target.decorate = function (prop, method) {
       return decorate(this, prop, method)
     }
@@ -9,8 +9,8 @@ module.exports = opts => {
   }
 }
 
-module.exports.emulateHapi = opts => {
-  return (next, target, plugin, cb) => {
+module.exports.emulateHapi = function (opts) {
+  return function (next, target, plugin, cb) {
     target.decorate = function (type, prop, method) {
       if (type !== 'server') {
         throw new Error('Only "server" type is supported')
@@ -25,7 +25,9 @@ module.exports.emulateHapi = opts => {
 
 function decorate (target, prop, method) {
   if (typeof prop === 'object') {
-    Object.keys(prop).forEach(key => decorate(target, key, prop[key]))
+    Object.keys(prop).forEach(function (key) {
+      decorate(target, key, prop[key])
+    })
     return
   }
 

@@ -117,6 +117,7 @@ None
 - [mocha](https://github.com/mochajs/mocha): simple, flexible, fun test framework
 - [mos](https://github.com/mosjs/mos): A pluggable module that injects content into your markdown files via hidden JavaScript snippets
 - [mos-plugin-readme](https://github.com/mosjs/mos-plugin-readme): A mos plugin for generating README
+- [object-assign](https://github.com/sindresorhus/object-assign): ES2015 Object.assign() ponyfill
 - [plugiator](https://github.com/zkochan/plugiator): hapi plugins creator
 - [remi](https://github.com/remijs/remi): A plugin registrator.
 

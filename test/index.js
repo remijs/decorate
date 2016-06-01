@@ -1,17 +1,18 @@
 'use strict'
-const describe = require('mocha').describe
-const it = require('mocha').it
-const beforeEach = require('mocha').beforeEach
-const chai = require('chai')
-const expect = chai.expect
-const plugiator = require('plugiator')
+var describe = require('mocha').describe
+var it = require('mocha').it
+var beforeEach = require('mocha').beforeEach
+var chai = require('chai')
+var expect = chai.expect
+var plugiator = require('plugiator')
+var objectAssign = require('object-assign')
 
-const remi = require('remi')
-const decorate = require('..')
+var remi = require('remi')
+var decorate = require('..')
 
 describe('decorate', function () {
-  let registrator
-  let app
+  var registrator
+  var app
 
   beforeEach(function () {
     app = {}
@@ -22,25 +23,25 @@ describe('decorate', function () {
   it('should decorate with a single property', function () {
     return registrator
       .register([
-        plugiator.anonymous((app, options, next) => {
+        plugiator.anonymous(function (app, options, next) {
           app.decorate('foo', 1)
           expect(app.foo).to.eq(1)
           expect(app.root.foo).to.eq(1)
           next()
         }),
-        plugiator.anonymous((app, options, next) => {
+        plugiator.anonymous(function (app, options, next) {
           expect(app.foo).to.eq(1)
           expect(app.root.foo).to.eq(1)
           next()
         }),
       ])
-      .then(() => expect(app.foo).to.eq(1))
+      .then(function () { expect(app.foo).to.eq(1) })
   })
 
   it('should decorate with multiple properties', function () {
     return registrator
       .register([
-        plugiator.anonymous((app, options, next) => {
+        plugiator.anonymous(function (app, options, next) {
           app.decorate({
             foo: 1,
           })
@@ -48,28 +49,28 @@ describe('decorate', function () {
           expect(app.root.foo).to.eq(1)
           next()
         }),
-        plugiator.anonymous((app, options, next) => {
+        plugiator.anonymous(function (app, options, next) {
           expect(app.foo).to.eq(1)
           expect(app.root.foo).to.eq(1)
           next()
         }),
       ])
-      .then(() => expect(app.foo).to.eq(1))
+      .then(function () { expect(app.foo).to.eq(1) })
   })
 
   it('should share the decorated elements through register invocations', function () {
     return registrator
       .register([
-        plugiator.anonymous((app, options, next) => {
+        plugiator.anonymous(function (app, options, next) {
           app.decorate('foo', 'bar')
           next()
         }),
       ])
-      .then(() => {
+      .then(function () {
         expect(app.foo).to.eq('bar')
         return registrator.register([plugiator.noop()])
       })
-      .then(() => {
+      .then(function () {
         expect(app.foo).to.eq('bar')
       })
   })
@@ -77,43 +78,43 @@ describe('decorate', function () {
   it('should through error if invalid parameters passed', function (done) {
     registrator
       .register([
-        plugiator.anonymous((app, options, next) => {
+        plugiator.anonymous(function (app, options, next) {
           app.decorate(111)
           next()
         }),
       ])
-      .catch(err => {
+      .catch(function (err) {
         expect(err).to.be.instanceOf(Error, 'invalid arguments passed to decorate')
         done()
       })
   })
 
   it('should decorate even if the target was changed by a different hook', function () {
-    registrator.hook((next, target, opts, cb) => {
-      next(Object.assign({}, target), opts, cb)
+    registrator.hook(function (next, target, opts, cb) {
+      next(objectAssign({}, target), opts, cb)
     })
 
     return registrator
       .register([
-        plugiator.anonymous((app, options, next) => {
+        plugiator.anonymous(function (app, options, next) {
           app.decorate('foo', 1)
           expect(app.foo).to.eq(1)
           next()
         }),
       ])
-      .then(() => expect(app.foo).to.eq(1))
+      .then(function () { expect(app.foo).to.eq(1) })
   })
 
   it('should throw error when trying to rewrite an existing property', function (done) {
     registrator
       .register([
-        plugiator.anonymous((app, options, next) => {
+        plugiator.anonymous(function (app, options, next) {
           app.decorate('foo', 111)
           app.decorate('foo', 111)
           next()
         }),
       ])
-      .catch(err => {
+      .catch(function (err) {
         expect(err).to.be.instanceOf(Error, 'Server decoration already defined: foo')
         done()
       })
@@ -121,8 +122,8 @@ describe('decorate', function () {
 })
 
 describe('decorate.emulateHapi', function () {
-  let registrator
-  let app
+  var registrator
+  var app
 
   beforeEach(function () {
     app = {}
@@ -133,8 +134,8 @@ describe('decorate.emulateHapi', function () {
   it('should through error if decoration type is not server and emulating hapi', function () {
     return registrator
       .register([
-        plugiator.anonymous((app, options, next) => {
-          expect(() => app.decorate('foo', 111))
+        plugiator.anonymous(function (app, options, next) {
+          expect(function () { app.decorate('foo', 111) })
             .to.throw(Error, 'Only "server" type is supported')
           next()
         }),
@@ -144,7 +145,7 @@ describe('decorate.emulateHapi', function () {
   it('should not through error if decoration type is server and emulating hapi', function () {
     return registrator
       .register([
-        plugiator.anonymous((app, options, next) => {
+        plugiator.anonymous(function (app, options, next) {
           app.decorate('server', 'foo', 111)
           expect(app.foo).to.eq(111)
           next()
