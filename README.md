@@ -1,5 +1,7 @@
 # remi-decorate
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/remijs/remi-decorate.svg)](https://greenkeeper.io/)
+
 > A remi extension that adds the decorate method to the target
 
 <!--@shields('npm', 'travis', 'coveralls')-->
